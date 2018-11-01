@@ -1,0 +1,184 @@
+Summary: Web-based network traffic monitoring
+Name: ntopng
+Version: 3.6.181020
+Release: 0
+License: GPL
+URL: http://www.ntop.org/
+Group: Networking/Utilities
+Source: ntopng-%{version}.tgz
+Packager: Luca Deri <deri@ntop.org>
+# Temporary location where the RPM will be built
+BuildRoot:  %{_tmppath}/%{name}-%{version}-root
+Requires: pfring = -, redis >= 2.4.0, rrdtool >= 1.3.8, numactl, libcurl, ntopng-data, logrotate, zeromq >= 4.0.0, openldap, openssl, hiredis, mysql, libnetfilter_queue, ethtool, bridge-utils, libcap, libnetfilter_conntrack, libzstd, libmaxminddb
+# Disable shared libs dependency check (needed by FPGA libs)
+AutoReqProv: no
+
+%description
+ntopng high-speed web-based traffic monitoring and analysis tool (libpcap)
+Web-based traffic monitoring
+
+%setup -q
+
+# Disable stripping
+%global _enable_debug_package 0
+%global debug_package %{nil}
+%global __os_install_post /usr/lib/rpm/brp-compress %{nil}
+
+%build
+if ! test -f "$HOME/ntopng/pro/utils/snzip"; then echo "snzip missing"; exit; fi
+#
+
+# Installation may be a matter of running an install make target or you
+# may need to manually install files with the install command.
+%install
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+if [ -d $RPM_BUILD_ROOT ]; then
+	\rm -rf $RPM_BUILD_ROOT
+fi
+
+mkdir -p $RPM_BUILD_ROOT/usr/bin $RPM_BUILD_ROOT/usr/share/ntopng $RPM_BUILD_ROOT/usr/share/man/man8 
+mkdir -p $RPM_BUILD_ROOT/etc/logrotate.d
+%if 0%{?centos_ver} != 7
+mkdir -p $RPM_BUILD_ROOT/etc/init.d 
+%endif
+cp $HOME/ntopng/ntopng $RPM_BUILD_ROOT/usr/bin
+cp $HOME/ntopng/ntopng.8 $RPM_BUILD_ROOT/usr/share/man/man8/ 
+cp -Lr $HOME/ntopng/httpdocs $HOME/ntopng/scripts $RPM_BUILD_ROOT/usr/share/ntopng  # L to dereference symlinks
+mv $RPM_BUILD_ROOT/usr/share/ntopng/httpdocs/misc/ntopng-utils-manage-config $RPM_BUILD_ROOT/usr/bin
+# Make sure dat files are not packaged by ntopng as they belong to ntopng-data
+rm -f $RPM_BUILD_ROOT/usr/share/ntopng/httpdocs/geoip/*dat
+mv $RPM_BUILD_ROOT/usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem.dummy $RPM_BUILD_ROOT/usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem
+if test -d "$HOME/ntopng/pro"; then
+   cd $HOME/ntopng/pro; make; cd -
+   mkdir $RPM_BUILD_ROOT/usr/share/ntopng/pro
+   cp -r $HOME/ntopng/pro/httpdocs $RPM_BUILD_ROOT/usr/share/ntopng/pro
+   cp -r $HOME/ntopng/pro/scripts $RPM_BUILD_ROOT/usr/share/ntopng/pro
+   cd $RPM_BUILD_ROOT/usr/share/ntopng/scripts/lua; ln -s ../../pro/scripts/lua pro
+   find $RPM_BUILD_ROOT/usr/share/ntopng/pro -name "*.lua" -type f -exec $HOME/ntopng/pro/utils/snzip -c -i {} -o {}r \;
+   find $RPM_BUILD_ROOT/usr/share/ntopng/pro -name "*.lua" -type f -exec /bin/rm  {} ';'
+   find $RPM_BUILD_ROOT/usr/share/ntopng/pro -name "*.luar" | xargs rename .luar .lua
+fi
+
+if hash systemctl 2>/dev/null; then
+   mkdir -p $RPM_BUILD_ROOT/usr/lib/systemd/system/
+   cp $HOME/ntopng/packages/etc/systemd/system/ntopng*.service $RPM_BUILD_ROOT/usr/lib/systemd/system/
+else
+   cp $HOME/ntopng/packages/etc/init.d/ntopng    $RPM_BUILD_ROOT/etc/init.d
+fi
+
+cp $HOME/ntopng/packages/etc/logrotate.d/ntopng    $RPM_BUILD_ROOT/etc/logrotate.d/
+
+mkdir $RPM_BUILD_ROOT/etc/ntopng
+cp $HOME/ntopng/packages/etc/ntopng/ntopng.conf    $RPM_BUILD_ROOT/etc/ntopng
+
+find $RPM_BUILD_ROOT -name ".git" | xargs /bin/rm -rf
+find $RPM_BUILD_ROOT -name ".svn" | xargs /bin/rm -rf
+find $RPM_BUILD_ROOT -name "*~"   | xargs /bin/rm -f
+#
+DST=$RPM_BUILD_ROOT/usr/ntopng
+SRC=$RPM_BUILD_DIR/%{name}-%{version}
+#mkdir -p $DST/conf
+# Clean out our build directory
+%clean
+rm -fr $RPM_BUILD_ROOT
+
+%files
+/usr/bin/ntopng
+/usr/bin/ntopng-utils-manage-config
+/usr/share/man/man8/ntopng.8.gz
+%config(noreplace) /etc/ntopng/ntopng.conf
+%if 0%{?centos_ver} == 7
+/usr/lib/systemd/system/ntopng.service
+%else
+/etc/init.d/ntopng
+%endif
+
+/etc/logrotate.d/ntopng
+/usr/share/ntopng
+# Don't overwrite ntopng-cert.pem is the file is already present
+%config(noreplace) /usr/share/ntopng/httpdocs/ssl/ntopng-cert.pem
+#/etc/ntopng/ntopng.conf.sample
+#/etc/ntopng/ntopng.start
+
+# Set the default attributes of all of the files specified to have an
+# owner and group of root and to inherit the permissions of the file
+# itself.
+%defattr(-, root, root)
+
+%changelog
+* Sun Jun 30 2013 Luca Deri <deri@ntop.org> 1.0
+- Current package version
+
+# Execution order:
+# install:    pre -> (copy) -> post
+# upgrade:    pre -> (copy) -> post -> preun (old) -> (delete old) -> postun (old)
+# un-install:                          preun       -> (delete)     -> postun
+
+%pre
+%if 0%{?centos_ver} != 7
+case "$1" in
+  1)
+    # install
+  ;;
+  2)
+    # upgrade
+    /etc/init.d/ntopng stop
+  ;;
+esac
+%endif
+
+%post
+echo 'Setting up redis auto startup'
+/sbin/chkconfig redis on
+echo 'Creating link under /usr/local/bin'
+if test ! -e /usr/local/bin/ntopng ; then ln -s /usr/bin/ntopng /usr/local/bin/ntopng ; fi
+if test -d /usr/local/share/ntopng ; then  mv /usr/local/share/ntopng /usr/local/share/ntopng.disabled; fi
+
+if [ ! -f /.dockerenv ]; then
+%if 0%{?centos_ver} == 7
+/bin/systemctl daemon-reload
+/bin/systemctl enable ntopng.service
+/bin/systemctl restart ntopng.service
+%else
+/sbin/chkconfig --add ntopng
+%endif
+fi
+
+%if 0%{?centos_ver} != 7
+case "$1" in
+  1)
+    # install
+    /etc/init.d/ntopng start
+  ;;
+  2)
+    # upgrade
+    /etc/init.d/ntopng start
+  ;;
+esac
+%endif
+
+%preun
+if [ ! -f /.dockerenv ]; then
+%if 0%{?centos_ver} != 7
+case "$1" in
+  0)
+    # un-install
+    /etc/init.d/ntopng stop
+  ;;
+  1)
+    # upgrade
+  ;;
+esac
+%endif
+
+%if 0%{?centos_ver} == 7
+  /bin/systemctl disable ntopng.service
+  /bin/systemctl stop ntopng.service
+%else
+  /sbin/chkconfig --del ntopng
+%endif
+fi
+
+if [ $1 == 0 ] ; then
+    rm -f /usr/local/bin/ntopng > /dev/null 2>&1
+fi
