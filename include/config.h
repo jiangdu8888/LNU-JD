@@ -91,10 +91,10 @@
 #define NO_SSL_DL 1
 
 /* Last GIT change */
-#define NTOPNG_GIT_DATE "2018年 10月 20日 星期六 09:36:41 CST"
+#define NTOPNG_GIT_DATE "2018年 10月 01日 星期六 09:36:41 CST"
 
 /* GIT Release */
-#define NTOPNG_GIT_RELEASE ":3.6.181020"
+#define NTOPNG_GIT_RELEASE ":1.0.181001"
 
 /* Building ntopng professional */
 /* #undef NTOPNG_PRO */
@@ -118,16 +118,16 @@
 #define PACKAGE_NAME "ntopng"
 
 /* OS Name */
-#define PACKAGE_OS "Ubuntu 16.04.3 LTS"
+#define PACKAGE_OS "Ubuntu 16.04.5 LTS"
 
 /* OS name */
 #define PACKAGE_OSNAME "Debian stretch/sid"
 
 /* GIT release of this package */
-#define PACKAGE_RELEASE "r3.6.181020"
+#define PACKAGE_RELEASE "r1.0.181001"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "ntopng 3.6.181020"
+#define PACKAGE_STRING "ntopng 1.0.181001"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "ntopng"
@@ -136,7 +136,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "3.6.181020"
+#define PACKAGE_VERSION "1.0.181001"
 
 /* Define to 1 if you have the ANSI C header files. */
 /* #undef STDC_HEADERS */

@@ -1,5 +1,5 @@
 odnl> Do not add anything above
-AC_INIT([ntopng],[3.6.181020])
+AC_INIT([LNU-NA],[1.0.181001])
 dnl> Do not add anything above
 
 AC_PROG_CPP
@@ -9,8 +9,8 @@ AC_PROG_CXX
 dnl> Add /usr/local/ /opt/local
 CFLAGS="-I${PWD} -I${PWD}/include"
 CPPFLAGS="${CPPFLAGS} -I${PWD} -I${PWD}/include"
-NTOPNG_VERSION="3.6.181020"
-NTOPNG_SHORT_VERSION="3.6"
+NTOPNG_VERSION="1.0.181001"
+NTOPNG_SHORT_VERSION="1.0"
 
 MACHINE=`uname -m`
 SYSTEM=`uname -s`
@@ -74,8 +74,8 @@ fi
 
 SHORT_MACHINE=`uname -m | cut -b1-3`
 
-GIT_RELEASE="3.6.181020"
-GIT_DATE="2018年 10月 20日 星期六 09:36:41 CST"
+GIT_RELEASE="1.0.181001"
+GIT_DATE="2018年 10月 01日 星期六 09:36:41 CST"
 GIT_BRANCH=""
 PRO_GIT_RELEASE=""
 PRO_GIT_DATE=""

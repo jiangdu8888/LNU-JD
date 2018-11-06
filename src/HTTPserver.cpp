@@ -455,7 +455,7 @@ void HTTPserver::setCaptiveRedirectAddress(const char *addr) {
 #ifdef HAVE_NEDGE
     ntop->getPro()->get_product_name()
 #else
-  "ntopng"
+  "LNU-NA"
 #endif
     ;
   

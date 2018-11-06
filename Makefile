@@ -124,12 +124,12 @@ CPPFLAGS = -g -Wall -I/home/jiang/ntopng-3.6.1 -I/home/jiang/ntopng-3.6.1/includ
 ######
 # ntopng-1.0_1234.x86_64.rpm
 PLATFORM = `uname -p`
-REVISION = 3.6.181020
-PACKAGE_VERSION = 3.6.181020
-NTOPNG_VERSION = 3.6.181020
-RPM_PKG = $(TARGET)-$(NTOPNG_VERSION)-0.$(PLATFORM).rpm
-RPM_PCAP_PKG = $(TARGET)-pcap-$(NTOPNG_VERSION)-0.$(PLATFORM).rpm
-RPM_DATA_PKG = $(TARGET)-data-$(NTOPNG_VERSION)-0.noarch.rpm
+REVISION = 1.0.181001
+PACKAGE_VERSION = 1.0.181001
+NTOPNG_VERSION = 1.0.181001
+RPM_PKG = $(TARGET)-$(NTOPNG_VERSION)-2.$(PLATFORM).rpm
+RPM_PCAP_PKG = $(TARGET)-pcap-$(NTOPNG_VERSION)-2.$(PLATFORM).rpm
+RPM_DATA_PKG = $(TARGET)-data-$(NTOPNG_VERSION)-2.noarch.rpm
 ######
 
 LIB_TARGETS =
@@ -243,9 +243,9 @@ docs:
 	cd doc && doxygen doxygen.conf
 
 dist:
-	rm -rf ntopng-3.6.181020
-	mkdir ntopng-3.6.181020
-	cd ntopng-3.6.181020; git clone https://github.com/ntop/ntopng.git; cd ntopng; git clone https://github.com/ntop/nDPI.git; cd ..; find ntopng -name .git | xargs rm -rf ; mv ntopng ntopng-3.6.181020; tar cvfz ../ntopng-3.6.181020.tgz ntopng-3.6.181020
+	rm -rf ntopng-1.0.181001
+	mkdir ntopng-1.0.181001
+	cd ntopng-1.0.181001; git clone https://github.com/ntop/ntopng.git; cd ntopng; git clone https://github.com/ntop/nDPI.git; cd ..; find ntopng -name .git | xargs rm -rf ; mv ntopng ntopng-1.0.181001; tar cvfz ../ntopng-1.0.181001.tgz ntopng-1.0.181001
 
 install: ntopng
 	@echo "Make sure you have already run 'make geoip' to also install geoip dat files"
@@ -273,7 +273,7 @@ minify:
 	cd httpdocs/js; make UGLIFY_VERSION= minify
 
 # Disabled to avoid too many recompilations
-#configure: 
+#configure: .git/index
 #	@echo ""
 #	@echo "Re-running autogen as the git release has changed"
 #	@echo ""

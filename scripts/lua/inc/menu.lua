@@ -67,16 +67,16 @@ print [[/lua/about.lua"><i class="fa fa-question-circle"></i> ]] print(i18n("abo
       <li><a href="]]
 print(ntop.getHttpPrefix())
 print [[/lua/runtime.lua"><i class="fa fa-hourglass-start"></i> ]] print(i18n("about.runtime_status")) print[[</a></li>
-      <li><a href="http://blog.ntop.org/" target="_blank"><i class="fa fa-rss"></i> ]] print(i18n("about.ntop_blog")) print[[ <i class="fa fa-external-link"></i></a></li>
-      <li><a href="https://t.me/ntop_community" target="_blank"><i class="fa fa-telegram"></i> ]] print(i18n("about.telegram")) print[[ <i class="fa fa-external-link"></i></a></li>
-      <li><a href="https://github.com/ntop/ntopng/issues" target="_blank"><i class="fa fa-bug"></i> ]] print(i18n("about.report_issue")) print[[ <i class="fa fa-external-link"></i></a></li>
+      <li><a href="https://weibo.com/573131420/home" target="_blank"><i class="fa fa-rss"></i> ]] print(i18n("about.author_blog")) print[[ <i class="fa fa-external-link"></i></a></li>
+      
+      <li><a href="https://github.com/jiangdu8888/LNU-JD/issues" target="_blank"><i class="fa fa-bug"></i> ]] print(i18n("about.report_issue")) print[[ <i class="fa fa-external-link"></i></a></li>
 <li class="divider"></li><li><a href="https://www.ntop.org/guides/ntopng/" target="_blank"><i class="fa fa-book"></i> ]] print(i18n("about.readme_and_manual")) print[[ <i class="fa fa-external-link"></i></a></li>
 
 <li><a href="https://www.ntop.org/guides/ntopng/api/" target="_blank"><i class="fa fa-book"></i> ]] print("Lua/C API") print[[ <i class="fa fa-external-link"></i></a></li>
 
 </ul>
 ]]
-
+--<li><a href="https://t.me/ntop_community" target="_blank"><i class="fa fa-telegram"></i> ]] print(i18n("about.telegram")) print[[ <i class="fa fa-external-link"></i></a></li>
 -- ##############################################
 
 if interface.isPcapDumpInterface() == false then
@@ -505,7 +505,7 @@ print(
 )
 print("</li>")
 
-print("</ul>\n<h3 class=\"muted\"><A href=\"http://www.ntop.org\">")
+print("</ul>\n<h3 class=\"muted\"><A href=\"http://netsrv.lnu.edu.cn/\">")
 
 addLogoSvg()
 

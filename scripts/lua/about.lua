@@ -88,7 +88,7 @@ print("</td></tr>")
 
 vers = string.split(info["version.git"], ":")
 if((vers ~= nil) and (vers[2] ~= nil)) then
-   ntopng_git_url = "<A HREF=\"https://github.com/ntop/ntopng/commit/".. vers[2] .."\">"..info["version"].."</A>"
+   ntopng_git_url = "<A HREF=\"https://github.com/jiangdu8888/LNU-JD".. vers[2] .."\">"..info["version"].."</A>"
 else
    ntopng_git_url = info["version"]
 end
@@ -139,6 +139,7 @@ print [[ <br><small>]] print(i18n("about.maxmind", {maxmind_url="http://www.maxm
 print("</td></tr>\n")
 end
 print("<tr><th><a href=\"http://www.d3js.org\" target=\"_blank\">Data-Driven Documents (d3js)</A></th><td>2.9.1 / 3.0</td></tr>\n")
+print("<tr><th><a href=\"https://www.ntop.org/products/traffic-analysis/ntop/\" target=\"_blank\">Design base on ntopng</A></th><td>3.6.181020</td></tr>\n")
 
 
 

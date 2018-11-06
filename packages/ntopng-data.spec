@@ -1,7 +1,7 @@
 Summary: GeoIP databases for ntopng
 Name: ntopng-data
-Version: 3.6.181020
-Release: 0
+Version: 1.0.181001
+Release: 2
 License: GPL
 Group: Networking/Utilities
 URL: http://www.ntop.org/

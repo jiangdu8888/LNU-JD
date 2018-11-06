@@ -25,7 +25,7 @@ print [[
    }
 
       .form-signin {
-        max-width: 350px;
+        max-width: 360px;
         padding: 9px 29px 29px;
         margin: 0 auto 20px;
         background-color: #fff;
