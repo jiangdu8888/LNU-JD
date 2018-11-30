@@ -27,7 +27,7 @@ An example of a configuration file is the following
    --max-num-hosts=250000
 
    # Dump flows to MySQL
-   --dump-flows=mysql;localhost;ntopng;flows;ntopng;xxx
+   --dump-flows=mysql;localhost;ntopng;flows;root;962464
 
    #--verbose
 

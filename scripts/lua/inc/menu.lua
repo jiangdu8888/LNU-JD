@@ -63,7 +63,7 @@ print [[
     <ul class="dropdown-menu">
       <li><a href="]]
 print(ntop.getHttpPrefix())
-print [[/lua/about.lua"><i class="fa fa-question-circle"></i> ]] print(i18n("about.about_ntopng")) print[[</a></li>
+print [[/lua/about.lua"><i class="fa fa-question-circle"></i> ]] print(i18n("about.about_LNU-NA")) print[[</a></li>
       <li><a href="]]
 print(ntop.getHttpPrefix())
 print [[/lua/runtime.lua"><i class="fa fa-hourglass-start"></i> ]] print(i18n("about.runtime_status")) print[[</a></li>
@@ -465,7 +465,21 @@ end
 print[[
     </ul>
   </li>]]
+---------------down have changed------------
+-- recommend
+_ifstats = interface.getStats()
 
+if(_ifstats.iface_sprobe) then
+   url1 = ntop.getHttpPrefix().."/lua/recommend.lua"
+else
+   url0 = ntop.getHttpPrefix().."/lua/recommend.lua"
+end
+if(active_page == "recommend") then
+   print('<li class="active"><a href="'..url1..'">') print(i18n("recommend")) print('</a></li>')
+else
+   print('<li><a href="'..url0..'">') print(i18n("recommend")) print('</a></li>')
+end
+----------up have changed----------
 if(_SESSION["user"] ~= nil and _SESSION["user"] ~= ntop.getNologinUser()) then
 print [[
     <li class="dropdown">
@@ -477,7 +491,6 @@ print [[
 print[[<li><a href="]]
 print(ntop.getHttpPrefix())
 print [[/lua/logout.lua"><i class="fa fa-sign-out"></i> ]] print(i18n("login.logout_user_x", {user=_SESSION["user"]})) print [[</a></li>]]
-
    print[[
     </ul>
     </li>
@@ -513,3 +526,5 @@ print("</A></h3>\n</div>\n")
 
 -- select the original interface back to prevent possible issues
 interface.select(ifname)
+
+

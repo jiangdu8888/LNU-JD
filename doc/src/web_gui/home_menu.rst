@@ -14,7 +14,7 @@ Four items belong to the Home menu. An additional entry 'Report' is available in
 
   Community Version Home Menu
 
-About ntopng
+About LNU-NA
 ------------
 Shows information about ntopng Version, Platform, Currently Logged User, Uptime value and some details related to its internals.
 
